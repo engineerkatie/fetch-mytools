@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#set -x
+#set -e
+
+if [ $# -gt 0 ]
+then
+        FILT="grep $1"
+else
+        FILT="cat"
+fi
+
+for fn in `ls build/NODES/node*/node.log`
+do
+    head -100 $fn | sed "s@^@$fn:@g" | egrep ":: [^ ]" | cut -d: -f1,7 | $FILT
+done
